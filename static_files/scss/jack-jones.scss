@@ -307,6 +307,14 @@
                 font-weight    : normal;
             }
 
+            h2 {
+                padding     : 0;
+                font-size   : 12px;
+                font-weight : normal;
+                font-family : $regular;
+                text-align  : center;
+            }
+
             .unauthenticated {
                 position       : absolute;
                 right          : 0;
@@ -315,30 +323,109 @@
                 font-size      : 10px;
 
                 a {
-                    color : #000;
+                    color : #2a2a2a;
                 }
             }
 
-            .customer_communication p {
-                width       : 60%;
-                text-align  : center;
-                margin      : 25px auto 0;
-                font-size   : 12px;
-                line-height : 20px;
-                font-family : $regular;
+            .customer_communication {
+                margin : 0;
+                float  : none;
+
+                p {
+                    width       : 60%;
+                    text-align  : center;
+                    margin      : 25px auto 0;
+                    font-size   : 12px;
+                    line-height : 20px;
+                    font-family : $regular;
+                }
             }
 
             .account_areas {
-                border  : none;
-                float   : none;
-                padding : 0;
-                width   : 100%;
+                border     : none;
+                float      : none;
+                padding    : 0;
+                width      : 100%;
+                margin-top : 45px;
 
                 .account_section {
-                    width: 25% !important;
-                    float: left;
-                    margin: 0;
-                    padding: 0;
+                    width      : 256px !important;
+                    float      : left;
+                    margin     : 7px;
+                    padding    : 0;
+                    min-height : 240px;
+                    border     : 1px solid #f2f2f2;
+                    @include box-sizing(border-box);
+
+                    &:hover {
+                        background : #fafafa;
+                    }
+
+                    dd {
+                        h6 {
+                            float         : none;
+                            font-size     : 12px;
+                            font-family   : $bold;
+                            font-weight   : normal;
+                            margin-bottom : 20px;
+
+                            a {
+                                background  : none;
+                                padding-top : 0;
+                                text-align  : center;
+                                color       : #2a2a2a;
+
+                                &:before {
+                                    content    : '';
+                                    display    : block;
+                                    background : transparent url(../img/sprite_myaccount_icons.png) no-repeat top center;
+                                    width      : 28px;
+                                    height     : 25px;
+                                    margin     : 40px auto;
+                                }
+                            }
+                        }
+
+                        ul {
+                            display : block;
+                            float   : none;
+
+                            li {
+                                background  : none;
+                                padding     : 0;
+                                text-align  : center;
+                                color       : #2a2a2a;
+                                font-size   : 12px !important;
+                                line-height : 18px;
+                                font-family : $regular;
+
+                            }
+                        }
+                    }
+
+                    &.personal_data dd h6 a:before {
+                        background-position: center -25px;
+                    }
+
+                    &.address_book dd h6 a:before {
+                        background-position: center -50px;
+                    }
+
+                    &.wish_list dd h6 a:before {
+                        background-position: center -75px;
+                    }
+
+                    &.reminders dd h6 a:before {
+                        background-position: center -100px;
+                    }
+
+                    &.sale dd h6 a:before {
+                        background-position: center -125px;
+                    }
+
+                    &.store_list dd h6 a:before {
+                        background-position: center -150px;
+                    }
                 }
             }
         }
