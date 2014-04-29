@@ -430,6 +430,92 @@
             }
         }
     }
+
+    .wishlist {
+        float      : none;
+        margin     : 0;
+        width      : 100%;
+        padding    : 0;
+        background : none;
+
+        .wishlistitems {
+            padding : 0;
+
+            h2 {
+                text-align     : center;
+                font-weight    : normal;
+                font-size      : 24;
+                line-height    : normal;
+                font-family    : $medium;
+                text-transform : uppercase;
+            }
+
+            .wishlist_item {
+                float         : none;
+                width         : 100%;
+                margin        : 0;
+                margin-bottom : 15px;
+                @include box-sizing(border-box);
+
+                &:after {
+                    content : '';
+                    clear   : both;
+                    display : block;
+                }
+
+                .wishlist_item_image {
+                    width  : auto;
+                    height : auto;
+                    border : 0;
+
+                    img {
+                        margin : 20px;
+                    }
+                }
+
+                .wishlist_item_details {
+                    width   : 948px;
+                    padding : 0;
+
+                    .wishlistlineitem {
+                        margin    : 0;
+                        width     : 753px;
+                        min-width : 0;
+                        float     : left;
+
+                        .product {
+                            @include box-sizing(border-box);
+
+                            &:first-child {
+                                width: 558px;
+                                float: left;
+                                height: 160px;
+                                border-right: 1px solid #ccc;
+                            }
+
+                            &:last-child div.product_id {
+                                width: 195px;
+                                float: left;
+                                height: 160px;
+                                border-right: 1px solid #ccc;
+                            }
+
+                            div.product_id {
+                                @include box-sizing(border-box);
+                            }
+                        }
+                    }
+
+                    button.addToCart,
+                    .editdetails,
+                    .wishlistremove {
+                        width: 195px !important;
+                        float: left !important;
+                    }
+                }
+            }
+        }
+    }
 }
 
 /* Core 2styles Hotfix - Jeppe leave it here until the Core2styles goes offline plz */
