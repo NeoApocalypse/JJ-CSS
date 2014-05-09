@@ -11,7 +11,7 @@ var jjStorefront = (function (jQuery) {
         // custom functions here
             assignGlobalVars : function () {
                 // Needed to pass through several functions
-                window.gridContainer = $('#branded .content .storefront-categories .gridify');
+                jjStorefront.gridContainer = $('#branded .content .storefront-categories .gridify');
 
                 // Vars for scrolling track - False should only be set once on load
                 jjStorefront.brandsReached = false;
@@ -139,9 +139,9 @@ var jjStorefront = (function (jQuery) {
                     $(this).hover(function(){
                         TweenMax.to($(this).find('.text'), 0.6, {bottom: 0, backgroundColor: 'rgba(252, 252, 252, 0.8)'});
                         TweenMax.to($(this).find('.overlay'), 0.6, {opacity: 1});
-                        if (gridContainer.hasClass('mixed') && $(this).parent().hasClass('small')) {
+                        if (jjStorefront.gridContainer.hasClass('mixed') && $(this).parent().hasClass('small')) {
                             TweenMax.to($(this).find('.slidein .linkcontainer > *'), 0.6, {opacity: 1});
-                        } else if (gridContainer.hasClass('small')) {
+                        } else if (jjStorefront.gridContainer.hasClass('small')) {
                             TweenMax.to($(this).find('.slidein .linkcontainer > *'), 0.6, {opacity: 1});
                         } else {
                             TweenMax.staggerTo($(this).find('.slidein .linkcontainer > *'), 0.6, {opacity: 1}, 0.08);
@@ -149,9 +149,9 @@ var jjStorefront = (function (jQuery) {
                     }, function(){
                         TweenMax.to($(this).find('.text'), 0.4, {bottom: -50, backgroundColor: 'rgba(252, 252, 252, 0.0)',});
                         TweenMax.to($(this).find('.overlay'), 0.4, {opacity: 0});
-                        if (gridContainer.hasClass('mixed') && $(this).parent().hasClass('small')) {
+                        if (jjStorefront.gridContainer.hasClass('mixed') && $(this).parent().hasClass('small')) {
                             TweenMax.to($(this).find('.slidein .linkcontainer > *'), 0.3, {opacity: 0});
-                        } else if (gridContainer.hasClass('small')) {
+                        } else if (jjStorefront.gridContainer.hasClass('small')) {
                             TweenMax.to($(this).find('.slidein .linkcontainer > *'), 0.3, {opacity: 0});
                         } else {
                             TweenMax.staggerTo($(this).find('.slidein .linkcontainer > *').get().reverse(), 0.3, {opacity: 0}, 0.08);
@@ -191,7 +191,7 @@ var jjStorefront = (function (jQuery) {
             },
 
             gridifyInit : function (colWidth) {
-                gridContainer.isotope({
+                jjStorefront.gridContainer.isotope({
                     itemSelector: '.box', // Don't change
                     layoutMode: 'masonry',
                     masonry: {
@@ -211,21 +211,21 @@ var jjStorefront = (function (jQuery) {
             },
 
             gridifyMixed : function () {
-                gridContainer.removeClass('large small').addClass('mixed');
-                gridContainer.isotope('reLayout');
-                gridContainer.isotope({sortBy: 'grid'});
+                jjStorefront.gridContainer.removeClass('large small').addClass('mixed');
+                jjStorefront.gridContainer.isotope('reLayout');
+                jjStorefront.gridContainer.isotope({sortBy: 'grid'});
             },
 
             gridifyLarge : function () {
-                gridContainer.removeClass('mixed small').addClass('large');
-                gridContainer.isotope('reLayout');
-                gridContainer.isotope({sortBy: 'original-order'});
+                jjStorefront.gridContainer.removeClass('mixed small').addClass('large');
+                jjStorefront.gridContainer.isotope('reLayout');
+                jjStorefront.gridContainer.isotope({sortBy: 'original-order'});
             },
 
             gridifySmall : function () {
-                gridContainer.removeClass('mixed large').addClass('small');
-                gridContainer.isotope('reLayout');
-                gridContainer.isotope({sortBy: 'original-order'});
+                jjStorefront.gridContainer.removeClass('mixed large').addClass('small');
+                jjStorefront.gridContainer.isotope('reLayout');
+                jjStorefront.gridContainer.isotope({sortBy: 'original-order'});
             },
 
             controls : function () {
@@ -263,6 +263,7 @@ var jjStorefront = (function (jQuery) {
                 jjStorefront.trackingBrands();
                 jjStorefront.trackingCategories();
                 //jjStorefront.trackingScroll();
+                jjStorefront.trackingNavigation();
             },
 
             trackingBrands : function () {
@@ -355,7 +356,107 @@ var jjStorefront = (function (jQuery) {
                         jjStorefront.footerReached = true;
                     }
                 });
+            },
+
+            trackingNavigation : function () {
+                // Home button
+                $('#branded .tabsplaceholder .tabscontainer .home a').click(function(){
+                    _gaq.push(['_trackEvent','jj-frontpage-test', 'navigation', 'Home toggled']);
+                });
+
+                // Toggle menu
+                $(document).on('hideSideMenuComplete', function(){
+                    _gaq.push(['_trackEvent','jj-frontpage-test', 'navigation', 'Menu hidden']);
+                });
+
+                $(document).on('showSideMenuComplete', function(){
+                    _gaq.push(['_trackEvent','jj-frontpage-test', 'navigation', 'Menu shown']);
+                });
+
+                // Subbrands
+                $('#branded .tabsplaceholder .tabscontainer .tabs .tab a').click(function(){
+                    var brandID = $(this).parent().data('brand');
+                    _gaq.push(['_trackEvent','jj-frontpage-test', 'tabs', brandID]);
+                });
+
+                // Scrollbar
+                $('#branded .side-menu .ps-container .ps-scrollbar-y').mousedown(function(e){
+                    _gaq.push(['_trackEvent','jj-frontpage-test', 'navigation', 'Scrollbar clicked']);
+                });
+            },
+
+            // ROSKILDE CAMPAIGN
+            roskildeDetection : function() {
+                var gaffaUTM_name = "utm_trig";
+                var gaffaUTM_val = "gaffa";
+                var newsletterUTM_name = "utm_campaign";
+                var newsletterUTM_val = "club_jj_W19b2014_DK_Rock";
+                var socialUTM_name = "utm_trig";
+                var socialUTM_val = "social";
+                fullQString = window.location.search.substring(1);
+                paramCount = 0;
+                queryStringComplete = "?";
+
+                if(fullQString.length > 0) {
+                   //Split Query String into separate parameters
+                   paramArray = fullQString.split("&");
+                   //Loop through params, check if parameter exists.  
+                   for (i=0;i<paramArray.length;i++) {
+                        currentParameter = paramArray[i].split("=");
+                        if(currentParameter[0] == gaffaUTM_name) { //Parameter already exists in current url
+                            if(currentParameter[1] == gaffaUTM_val) {
+                                document.cookie="RSK_gaffa=true; path=/";   // Hallo, Gaffa!
+                            }
+                        }
+                        if(currentParameter[0] == newsletterUTM_name) { //Parameter already exists in current url
+                            if(currentParameter[1] == newsletterUTM_val) {
+                                document.cookie="RSK_newsletter=true; path=/";   // Hallo, Newsletter!
+                            }
+                        }
+                        if(currentParameter[0] == socialUTM_name) { //Parameter already exists in current url
+                            if(currentParameter[1] == socialUTM_val) {
+                                document.cookie="RSK_social=true; path=/";   // Hallo, Social!
+                            }
+                        }
+                    }
+                }
+            },
+
+            // use this to find out if we're dealing with a Gaffa user.. 
+            // if(jjStorefront.getCookie("RSK_gaffa"))
+            getCookie : function(cname) {
+                var name = cname + "=";
+                var ca = document.cookie.split(';');
+                for(var i=0; i<ca.length; i++) {
+                    var c = ca[i].trim();
+                    if (c.indexOf(name) === 0) return c.substring(name.length,c.length);
+                }
+                return "";
+            },
+
+            centerPopup : function () {
+                var offset = $('.roskilde-overlay .content').outerHeight() / 2;
+
+                TweenMax.set($('.roskilde-overlay .content'), {marginTop: '-' + offset});
+            },
+
+            displayPopup : function () {
+                if(jjStorefront.getCookie('RSK_gaffa') || jjStorefront.getCookie('RSK_newsletter') || jjStorefront.getCookie('RSK_social')) {
+                    $('.roskilde-overlay').show();
+                    TweenMax.to($('.roskilde-overlay'), 0.6, {
+                        opacity: 1,
+                        ease:Cubic.easeOut
+                    });
+                }
+            },
+
+            hidePopup : function () {
+                $('.hideThisShit').click(function(e){
+                    e.preventDefault();
+                    $('.roskilde-overlay').remove();
+                });
             }
+
         // end custom functions
     };
 })(jQuery);
@@ -369,6 +470,12 @@ jQuery(document).ready(function () {
     jjStorefront.initQuickview();
     jjStorefront.detectGrid();
     jjStorefront.trackingInit();
+
+    // ROSKILDE CAMPAIGN
+    jjStorefront.roskildeDetection();
+    jjStorefront.centerPopup();
+    jjStorefront.displayPopup();
+    jjStorefront.hidePopup();
 });
 
 jQuery(window).load(function(){
